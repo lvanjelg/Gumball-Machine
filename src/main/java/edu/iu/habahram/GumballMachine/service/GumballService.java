@@ -24,12 +24,7 @@ public class GumballService implements IGumballService{
         GumballMachineRecord record = gumballRepository.findById(id);
         IGumballMachine machine = new GumballMachine(record.getId(), record.getState(), record.getCount());
         TransitionResult result = machine.insertQuarter();
-        if(result.succeeded()) {
-            record.setState(result.stateAfter());
-            record.setCount(result.countAfter());
-            save(record);
-        }
-        return result;
+        return checkResult(result,record);
     }
 
     @Override
@@ -37,12 +32,7 @@ public class GumballService implements IGumballService{
         GumballMachineRecord record = gumballRepository.findById(id);
         IGumballMachine machine = new GumballMachine(record.getId(), record.getState(), record.getCount());
         TransitionResult result = machine.ejectQuarter();
-        if(result.succeeded()) {
-            record.setState(result.stateAfter());
-            record.setCount(result.countAfter());
-            save(record);
-        }
-        return result;
+        return checkResult(result,record);
     }
 
     @Override
@@ -50,15 +40,17 @@ public class GumballService implements IGumballService{
         GumballMachineRecord record = gumballRepository.findById(id);
         IGumballMachine machine = new GumballMachine(record.getId(), record.getState(), record.getCount());
         TransitionResult result = machine.turnCrank();
-        if(result.succeeded()) {
+        return checkResult(result,record);
+    }
+
+    public TransitionResult checkResult(TransitionResult result, GumballMachineRecord record) throws IOException {
+        if(result.succeeded()){
             record.setState(result.stateAfter());
             record.setCount(result.countAfter());
             save(record);
         }
         return result;
     }
-
-    
 
     @Override
     public List<GumballMachineRecord> findAll() throws IOException {

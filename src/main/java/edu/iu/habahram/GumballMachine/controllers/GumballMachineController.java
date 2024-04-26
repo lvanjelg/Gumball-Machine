@@ -7,6 +7,7 @@ import edu.iu.habahram.GumballMachine.repository.IGumballRepository;
 import edu.iu.habahram.GumballMachine.service.IGumballService;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -60,6 +61,14 @@ public class GumballMachineController {
         try {
             return gumballService.turnCrank(transitionRequest.id());
         } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+    @PutMapping("/refill")
+    public TransitionResult refill(@RequestBody TransitionRequest transitionRequest){
+        try{
+            return gumballService.turnCrank((transitionRequest.id()));
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }

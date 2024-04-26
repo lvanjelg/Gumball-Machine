@@ -102,6 +102,12 @@ public class GumballMachine implements IGumballMachine {
     }
 
     @Override
+    public TransitionResult refill(int gumballs) {
+        this.count += gumballs;
+        return null;
+    }
+
+    @Override
     public void releaseBall() {
 
     }

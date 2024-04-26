@@ -36,6 +36,11 @@ public class GumballMachine2 implements IGumballMachine{
         return state.getTheName();
     }
 
+    @Override
+    public TransitionResult refill(int gumballs) {
+        this.count += gumballs;
+        return state.ejectQuarter();
+    }
 
 
     public void setState(IState state) {
